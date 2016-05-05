@@ -4,6 +4,29 @@ This is a work in progress. The goal is to develop a nginx plugin in Go (by maki
 
 To be continued ...
 
+Goals:
+
+````
+location / {
+  set $gh_pages_host "";
+  set $gh_pages_path "";
+
+  access_by_lua_file /data/pages-lua/router.lua;
+
+  proxy_set_header X-GitHub-Pages-Root $gh_pages_path;
+  proxy_pass http://$gh_pages_host$request_uri;
+}
+````
+
+resources: 
+http://githubengineering.com/rearchitecting-github-pages/
+http://www.nginxguts.com/2011/09/configuration-directives/#more-343
+
+TODO:
+- set a variable from a module with a directive
+- load testing and dlopen performance documentation
+
+
 ### Hacking
 
 `docker` must be installed and running
