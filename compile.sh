@@ -25,15 +25,15 @@ CGO_CFLAGS="-I ./vendor/nginx-$NGINX_VERSION/src/core \
 #compile nginx with the echo module
 pushd vendor > /dev/null 2>&1
 pushd nginx-$NGINX_VERSION > /dev/null 2>&1
-CFLAGS="-g -O0" ./configure           \
-    --with-debug                      \
-    --prefix=$(pwd)/../../build/nginx \
-    --conf-path=conf/nginx.conf       \
-    --error-log-path=logs/error.log   \
-    --http-log-path=logs/access.log   \
-    --add-module=../../ 							\
-		--add-module=../echo-nginx-module \
-		--with-http_ssl_module 
+CFLAGS="-g -O0" ./configure           											\
+    --with-debug                      											\
+    --prefix=$(pwd)/../../build/nginx 											\
+    --conf-path=conf/nginx.conf       											\
+    --error-log-path=logs/error.log   											\
+    --http-log-path=logs/access.log   											\
+		--add-module=../echo-nginx-module-$ECHO_VERSION  				\
+    --add-module=../ngx_devel_kit-$NDK_VERSION							\
+    --add-module=../../
 make
 make install
 popd > /dev/null 2>&1
