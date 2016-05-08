@@ -21,6 +21,7 @@ location / {
 resources: 
 http://githubengineering.com/rearchitecting-github-pages/
 http://www.nginxguts.com/2011/09/configuration-directives/#more-343
+https://github.com/openresty/set-misc-nginx-module
 
 TODO:
 - set a variable from a module with a directive
