@@ -36,6 +36,7 @@ install_nginx () {
     tar xzf  "v$NDK_VERSION.tar.gz"
     rm -f "v$NDK_VERSION.tar.gz"
     
+    ## download echo module (used for debugging)
     curl -s -L -O "http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz"
     tar xzf "nginx-$NGINX_VERSION.tar.gz"
     rm -f "nginx-$NGINX_VERSION.tar.gz"

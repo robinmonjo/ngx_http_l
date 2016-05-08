@@ -11,16 +11,7 @@ echo "building shared library"
 
 rm -f ngx_http_l_module.a ngx_http_l_module.h
 
-CGO_CFLAGS="-I ./vendor/nginx-$NGINX_VERSION/src/core \
-	-I ./vendor/nginx-$NGINX_VERSION/src/event \
-	-I ./vendor/nginx-$NGINX_VERSION/src/event/modules \
-	-I ./vendor/nginx-$NGINX_VERSION/src/os/unix \
-	-I ./vendor/nginx-$NGINX_VERSION/usr/local/include \
-	-I ./vendor/nginx-$NGINX_VERSION/objs \
-	-I ./vendor/nginx-$NGINX_VERSION/src/http \
-	-I ./vendor/nginx-$NGINX_VERSION/src/http/modules \
-	-I ./vendor/nginx-$NGINX_VERSION/src/mail \
-	-I ./vendor/nginx-$NGINX_VERSION/src/stream" go build -o ngx_http_l_module.a -buildmode=c-shared ngx_http_l_module.go
+CGO_CFLAGS="-I ./vendor/ngx_devel_kit-$NDK_VERSION/src" go build -o ngx_http_l_module.a -buildmode=c-shared ngx_http_l_module.go
 
 #compile nginx with the echo module
 pushd vendor > /dev/null 2>&1

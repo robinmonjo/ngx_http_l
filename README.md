@@ -27,7 +27,6 @@ TODO:
 - set a variable from a module with a directive
 - load testing and dlopen performance documentation
 
-
 ### Hacking
 
 `docker` must be installed and running

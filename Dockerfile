@@ -8,6 +8,7 @@ ENV PATH=$PATH:/usr/local/go/bin
 RUN mkdir /lab
 WORKDIR /lab
 
+
 ADD bootstrap.sh /lab
 ARG NGINX_VERSION
 ARG ECHO_VERSION
