@@ -59,8 +59,11 @@ static ngx_int_t ngx_http_l_set_host(ngx_http_request_t *r, ngx_str_t *res, ngx_
   }
 
   u_char* (*fun)(u_char *) = (u_char* (*)(u_char *)) dlsym(go_module, "LookupHost");
+  char* host_str = fun("test");
   
-  ngx_str_t host = ngx_string(fun("test"));
+  size_t len = strlen(host_str);
+  
+  ngx_str_t host = { len, (u_char *) host_str };
   
   res->data = ngx_palloc(r->pool, host.len);
   if (res->data == NULL) {
@@ -70,11 +73,7 @@ static ngx_int_t ngx_http_l_set_host(ngx_http_request_t *r, ngx_str_t *res, ngx_
   ngx_memcpy(res->data, host.data, host.len);
 
   res->len = host.len;
-  
-  v->valid = 1;
-  v->no_cacheable = 0;
-  v->not_found = 0;
-  
+
   return NGX_OK;
 }
 

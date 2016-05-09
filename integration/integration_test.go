@@ -40,10 +40,6 @@ func TestNginxRunning(t *testing.T) {
 	if resp.StatusCode != code {
 		t.Fatalf("expected status code to be %d, got %d", code, resp.StatusCode)
 	}
-	fmt.Printf("%#v", resp.Header)
-	if resp.Header.Get("X-NGINX-Tutorial") != "Hello World!" {
-		t.Fatal("bad header")
-	}
 
 	fmt.Println("All good baby")
 }

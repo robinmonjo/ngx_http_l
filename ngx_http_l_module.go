@@ -2,14 +2,11 @@
 package main
 
 import "C"
-import (
-	"io/ioutil"
-)
 
 //export LookupHost
 func LookupHost(r *C.char) *C.char {
-	ioutil.WriteFile("/lab/build/nginx/logs/go.logs", []byte("salut ma gueule maudite"), 0644)
-	return C.CString("ta racen la pute nerge")
+	//TODO perform real lookup
+	return C.CString("www.helloworld.nz")
 }
 
 func main() {
