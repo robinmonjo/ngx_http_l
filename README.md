@@ -2,9 +2,7 @@
 
 This is a work in progress. The goal is to develop a nginx plugin in Go (by making mandatory C code call Go code).
 
-To be continued ...
-
-Goals:
+The goal is to mimic what github made with nginx as described in [this article](http://githubengineering.com/rearchitecting-github-pages/).
 
 ````
 location / {
@@ -19,13 +17,15 @@ location / {
 ````
 
 resources: 
-http://githubengineering.com/rearchitecting-github-pages/
 http://www.nginxguts.com/2011/09/configuration-directives/#more-343
 https://github.com/openresty/set-misc-nginx-module
 
-TODO:
-- set a variable from a module with a directive
-- load testing and dlopen performance documentation
+### Progress
+
+- [x] call Go code from a nginx module
+- [x] create a directive `set_host` that set a variable (a string). This string must come from the Go code
+- [ ] load testing and dlopen performance documentation
+- [ ] to be continued
 
 ### Hacking
 
