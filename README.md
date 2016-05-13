@@ -1,4 +1,4 @@
-# ngx_http_l
+# ngx_http_set_backend
 
 This is a work in progress. The goal is to develop a nginx plugin in Go (by making mandatory C code call Go code).
 
@@ -19,6 +19,12 @@ location / {
 resources: 
 http://www.nginxguts.com/2011/09/configuration-directives/#more-343
 https://github.com/openresty/set-misc-nginx-module
+
+TODOs
+- [ ] start implementing the database (boltdb) that will, from a Host header, find the corresponding IP address
+- [ ] REST api to add host / delete a host / list host
+- [ ] unit test the Go part
+- [ ] integration testing the entire process
 
 ### Progress
 

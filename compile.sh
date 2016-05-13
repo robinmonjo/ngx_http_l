@@ -9,9 +9,7 @@ rm -rf build
 #build go shared library
 echo "building shared library"
 
-rm -f ngx_http_l_module.a ngx_http_l_module.h
-
-CGO_CFLAGS="-I ./vendor/ngx_devel_kit-$NDK_VERSION/src" go build -o ngx_http_l_module.a -buildmode=c-shared ngx_http_l_module.go
+CGO_CFLAGS="-I ./vendor/ngx_devel_kit-$NDK_VERSION/src" go build -o ngx_http_set_backend_module.a -buildmode=c-shared ngx_http_set_backend_module.go
 
 #compile nginx with the echo module
 pushd vendor > /dev/null 2>&1
