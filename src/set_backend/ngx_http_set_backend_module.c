@@ -41,9 +41,9 @@ ngx_module_t ngx_http_set_backend_module = {
 
 static ngx_int_t ngx_http_set_backend(ngx_http_request_t *r, ngx_str_t *res, ngx_http_variable_value_t *v) {
   
-  void *go_module = dlopen("/lab/ngx_http_set_backend_module.a", RTLD_LAZY); //TODO: no hardcoded path
+  void *go_module = dlopen("/lab/build/ngx_http_set_backend_module.a", RTLD_LAZY); //TODO: no hardcoded path
   if (!go_module) {
-     //todo dlerror()
+     return NGX_ERROR;
   }
 
   u_char* (*fun)(u_char *) = (u_char* (*)(u_char *)) dlsym(go_module, "LookupBackend");
