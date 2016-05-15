@@ -1,0 +1,933 @@
+
+
+----------------------------------------
+checking for C compiler
+
+
+----------------------------------------
+checking for -Wl,-E switch
+
+ld: unknown option: -E
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+----------
+
+#include <sys/types.h>
+
+
+
+int main() {
+    ;
+    return 0;
+}
+
+----------
+cc -g -O0 -o objs/autotest objs/autotest.c -Wl,-E
+----------
+
+----------------------------------------
+checking for gcc builtin atomic operations
+
+
+----------------------------------------
+checking for C99 variadic macros
+
+
+----------------------------------------
+checking for gcc variadic macros
+
+
+----------------------------------------
+checking for gcc builtin 64 bit byteswap
+
+objs/autotest.c:7:5: warning: ignoring return value of function declared with const attribute [-Wunused-value]
+    __builtin_bswap64(0);
+    ^~~~~~~~~~~~~~~~~ ~
+1 warning generated.
+
+----------------------------------------
+checking for unistd.h
+
+
+----------------------------------------
+checking for inttypes.h
+
+
+----------------------------------------
+checking for limits.h
+
+
+----------------------------------------
+checking for sys/filio.h
+
+
+----------------------------------------
+checking for sys/param.h
+
+
+----------------------------------------
+checking for sys/mount.h
+
+
+----------------------------------------
+checking for sys/statvfs.h
+
+
+----------------------------------------
+checking for crypt.h
+
+objs/autotest.c:3:10: fatal error: 'crypt.h' file not found
+#include <crypt.h>
+         ^
+1 error generated.
+----------
+
+#include <sys/param.h>
+#include <crypt.h>
+
+int main() {
+    return 0;
+}
+
+----------
+cc -o objs/autotest objs/autotest.c
+----------
+
+----------------------------------------
+checking for kqueue's EVFILT_TIMER
+
+
+----------------------------------------
+checking for Darwin 64-bit kqueue millisecond timeout bug
+
+
+----------------------------------------
+checking for sendfile()
+
+
+----------------------------------------
+checking for atomic(3)
+
+
+----------------------------------------
+checking for poll()
+
+
+----------------------------------------
+checking for /dev/poll
+
+objs/autotest.c:4:10: fatal error: 'sys/devpoll.h' file not found
+#include <sys/devpoll.h>
+         ^
+1 error generated.
+----------
+
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/devpoll.h>
+
+int main() {
+    int  n, dp; struct dvpoll  dvp;
+                  dp = 0;
+                  dvp.dp_fds = NULL;
+                  dvp.dp_nfds = 0;
+                  dvp.dp_timeout = 0;
+                  n = ioctl(dp, DP_POLL, &dvp);
+                  if (n == -1) return 1;
+    return 0;
+}
+
+----------
+cc -g -O0 -o objs/autotest objs/autotest.c
+----------
+
+----------------------------------------
+checking for crypt()
+
+
+----------------------------------------
+checking for F_READAHEAD
+
+objs/autotest.c:7:14: error: use of undeclared identifier 'F_READAHEAD'
+    fcntl(0, F_READAHEAD, 1);;
+             ^
+1 error generated.
+----------
+
+#include <sys/types.h>
+#include <unistd.h>
+#include <fcntl.h>
+
+int main() {
+    fcntl(0, F_READAHEAD, 1);;
+    return 0;
+}
+
+----------
+cc -g -O0 -o objs/autotest objs/autotest.c
+----------
+
+----------------------------------------
+checking for posix_fadvise()
+
+objs/autotest.c:7:5: warning: implicit declaration of function 'posix_fadvise' is invalid in C99 [-Wimplicit-function-declaration]
+    posix_fadvise(0, 0, 0, POSIX_FADV_SEQUENTIAL);;
+    ^
+objs/autotest.c:7:28: error: use of undeclared identifier 'POSIX_FADV_SEQUENTIAL'
+    posix_fadvise(0, 0, 0, POSIX_FADV_SEQUENTIAL);;
+                           ^
+1 warning and 1 error generated.
+----------
+
+#include <sys/types.h>
+#include <unistd.h>
+#include <fcntl.h>
+
+int main() {
+    posix_fadvise(0, 0, 0, POSIX_FADV_SEQUENTIAL);;
+    return 0;
+}
+
+----------
+cc -g -O0 -o objs/autotest objs/autotest.c
+----------
+
+----------------------------------------
+checking for O_DIRECT
+
+objs/autotest.c:7:23: error: use of undeclared identifier 'O_DIRECT'
+    fcntl(0, F_SETFL, O_DIRECT);;
+                      ^
+1 error generated.
+----------
+
+#include <sys/types.h>
+#include <unistd.h>
+#include <fcntl.h>
+
+int main() {
+    fcntl(0, F_SETFL, O_DIRECT);;
+    return 0;
+}
+
+----------
+cc -g -O0 -o objs/autotest objs/autotest.c
+----------
+
+----------------------------------------
+checking for F_NOCACHE
+
+
+----------------------------------------
+checking for directio()
+
+objs/autotest.c:8:5: warning: implicit declaration of function 'directio' is invalid in C99 [-Wimplicit-function-declaration]
+    directio(0, DIRECTIO_ON);;
+    ^
+objs/autotest.c:8:17: error: use of undeclared identifier 'DIRECTIO_ON'
+    directio(0, DIRECTIO_ON);;
+                ^
+1 warning and 1 error generated.
+----------
+
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/types.h>
+                  #include <sys/fcntl.h>
+
+int main() {
+    directio(0, DIRECTIO_ON);;
+    return 0;
+}
+
+----------
+cc -g -O0 -o objs/autotest objs/autotest.c
+----------
+
+----------------------------------------
+checking for statfs()
+
+
+----------------------------------------
+checking for statvfs()
+
+
+----------------------------------------
+checking for dlopen()
+
+
+----------------------------------------
+checking for sched_yield()
+
+
+----------------------------------------
+checking for SO_SETFIB
+
+objs/autotest.c:7:31: error: use of undeclared identifier 'SO_SETFIB'
+    setsockopt(0, SOL_SOCKET, SO_SETFIB, NULL, 0);
+                              ^
+1 error generated.
+----------
+
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/socket.h>
+
+int main() {
+    setsockopt(0, SOL_SOCKET, SO_SETFIB, NULL, 0);
+    return 0;
+}
+
+----------
+cc -g -O0 -o objs/autotest objs/autotest.c
+----------
+
+----------------------------------------
+checking for SO_REUSEPORT
+
+
+----------------------------------------
+checking for SO_ACCEPTFILTER
+
+objs/autotest.c:7:31: error: use of undeclared identifier 'SO_ACCEPTFILTER'
+    setsockopt(0, SOL_SOCKET, SO_ACCEPTFILTER, NULL, 0);
+                              ^
+1 error generated.
+----------
+
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/socket.h>
+
+int main() {
+    setsockopt(0, SOL_SOCKET, SO_ACCEPTFILTER, NULL, 0);
+    return 0;
+}
+
+----------
+cc -g -O0 -o objs/autotest objs/autotest.c
+----------
+
+----------------------------------------
+checking for IP_RECVDSTADDR
+
+
+----------------------------------------
+checking for IP_PKTINFO
+
+
+----------------------------------------
+checking for IPV6_RECVPKTINFO
+
+objs/autotest.c:8:33: error: use of undeclared identifier 'IPV6_RECVPKTINFO'
+    setsockopt(0, IPPROTO_IPV6, IPV6_RECVPKTINFO, NULL, 0);
+                                ^
+1 error generated.
+----------
+
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/socket.h>
+                  #include <netinet/in.h>
+
+int main() {
+    setsockopt(0, IPPROTO_IPV6, IPV6_RECVPKTINFO, NULL, 0);
+    return 0;
+}
+
+----------
+cc -g -O0 -o objs/autotest objs/autotest.c
+----------
+
+----------------------------------------
+checking for TCP_DEFER_ACCEPT
+
+objs/autotest.c:9:32: error: use of undeclared identifier 'TCP_DEFER_ACCEPT'
+    setsockopt(0, IPPROTO_TCP, TCP_DEFER_ACCEPT, NULL, 0);
+                               ^
+1 error generated.
+----------
+
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/socket.h>
+                  #include <netinet/in.h>
+                  #include <netinet/tcp.h>
+
+int main() {
+    setsockopt(0, IPPROTO_TCP, TCP_DEFER_ACCEPT, NULL, 0);
+    return 0;
+}
+
+----------
+cc -g -O0 -o objs/autotest objs/autotest.c
+----------
+
+----------------------------------------
+checking for TCP_KEEPIDLE
+
+objs/autotest.c:9:32: error: use of undeclared identifier 'TCP_KEEPIDLE'
+    setsockopt(0, IPPROTO_TCP, TCP_KEEPIDLE, NULL, 0);
+                               ^
+1 error generated.
+----------
+
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/socket.h>
+                  #include <netinet/in.h>
+                  #include <netinet/tcp.h>
+
+int main() {
+    setsockopt(0, IPPROTO_TCP, TCP_KEEPIDLE, NULL, 0);
+                  setsockopt(0, IPPROTO_TCP, TCP_KEEPINTVL, NULL, 0);
+                  setsockopt(0, IPPROTO_TCP, TCP_KEEPCNT, NULL, 0);
+    return 0;
+}
+
+----------
+cc -g -O0 -o objs/autotest objs/autotest.c
+----------
+
+----------------------------------------
+checking for TCP_FASTOPEN
+
+
+----------------------------------------
+checking for TCP_INFO
+
+objs/autotest.c:9:24: error: invalid application of 'sizeof' to an incomplete type 'struct tcp_info'
+    socklen_t optlen = sizeof(struct tcp_info);
+                       ^     ~~~~~~~~~~~~~~~~~
+objs/autotest.c:9:38: note: forward declaration of 'struct tcp_info'
+    socklen_t optlen = sizeof(struct tcp_info);
+                                     ^
+objs/autotest.c:10:35: error: variable has incomplete type 'struct tcp_info'
+                  struct tcp_info ti;
+                                  ^
+objs/autotest.c:9:38: note: forward declaration of 'struct tcp_info'
+    socklen_t optlen = sizeof(struct tcp_info);
+                                     ^
+objs/autotest.c:15:46: error: use of undeclared identifier 'TCP_INFO'
+                  getsockopt(0, IPPROTO_TCP, TCP_INFO, &ti, &optlen);
+                                             ^
+3 errors generated.
+----------
+
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/socket.h>
+                  #include <netinet/in.h>
+                  #include <netinet/tcp.h>
+
+int main() {
+    socklen_t optlen = sizeof(struct tcp_info);
+                  struct tcp_info ti;
+                  ti.tcpi_rtt = 0;
+                  ti.tcpi_rttvar = 0;
+                  ti.tcpi_snd_cwnd = 0;
+                  ti.tcpi_rcv_space = 0;
+                  getsockopt(0, IPPROTO_TCP, TCP_INFO, &ti, &optlen);
+    return 0;
+}
+
+----------
+cc -g -O0 -o objs/autotest objs/autotest.c
+----------
+
+----------------------------------------
+checking for accept4()
+
+objs/autotest.c:7:5: warning: implicit declaration of function 'accept4' is invalid in C99 [-Wimplicit-function-declaration]
+    accept4(0, NULL, NULL, SOCK_NONBLOCK);
+    ^
+objs/autotest.c:7:28: error: use of undeclared identifier 'SOCK_NONBLOCK'
+    accept4(0, NULL, NULL, SOCK_NONBLOCK);
+                           ^
+1 warning and 1 error generated.
+----------
+
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/socket.h>
+
+int main() {
+    accept4(0, NULL, NULL, SOCK_NONBLOCK);
+    return 0;
+}
+
+----------
+cc -g -O0 -o objs/autotest objs/autotest.c
+----------
+
+----------------------------------------
+checking for eventfd()
+
+objs/autotest.c:4:10: fatal error: 'sys/eventfd.h' file not found
+#include <sys/eventfd.h>
+         ^
+1 error generated.
+----------
+
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/eventfd.h>
+
+int main() {
+    (void) eventfd(0, 0);
+    return 0;
+}
+
+----------
+cc -g -O0 -o objs/autotest objs/autotest.c
+----------
+
+----------------------------------------
+checking for eventfd() (SYS_eventfd)
+
+objs/autotest.c:7:13: error: use of undeclared identifier 'SYS_eventfd'
+    int n = SYS_eventfd;
+            ^
+1 error generated.
+----------
+
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/syscall.h>
+
+int main() {
+    int n = SYS_eventfd;
+    return 0;
+}
+
+----------
+cc -g -O0 -o objs/autotest objs/autotest.c
+----------
+
+----------------------------------------
+checking for int size
+
+
+----------------------------------------
+checking for long size
+
+
+----------------------------------------
+checking for long long size
+
+
+----------------------------------------
+checking for void * size
+
+
+----------------------------------------
+checking for uint32_t
+
+
+----------------------------------------
+checking for uint64_t
+
+
+----------------------------------------
+checking for sig_atomic_t
+
+
+----------------------------------------
+checking for sig_atomic_t size
+
+
+----------------------------------------
+checking for socklen_t
+
+
+----------------------------------------
+checking for in_addr_t
+
+
+----------------------------------------
+checking for in_port_t
+
+
+----------------------------------------
+checking for rlim_t
+
+
+----------------------------------------
+checking for uintptr_t
+
+
+----------------------------------------
+checking for system byte ordering
+
+
+----------------------------------------
+checking for size_t size
+
+
+----------------------------------------
+checking for off_t size
+
+
+----------------------------------------
+checking for time_t size
+
+
+----------------------------------------
+checking for setproctitle()
+
+objs/autotest.c:7:5: warning: implicit declaration of function 'setproctitle' is invalid in C99 [-Wimplicit-function-declaration]
+    setproctitle("test");;
+    ^
+1 warning generated.
+Undefined symbols for architecture x86_64:
+  "_setproctitle", referenced from:
+      _main in autotest-2ce698.o
+ld: symbol(s) not found for architecture x86_64
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+----------
+
+#include <sys/types.h>
+#include <unistd.h>
+#include <stdlib.h>
+
+int main() {
+    setproctitle("test");;
+    return 0;
+}
+
+----------
+cc -g -O0 -o objs/autotest objs/autotest.c
+----------
+
+----------------------------------------
+checking for pread()
+
+
+----------------------------------------
+checking for pwrite()
+
+
+----------------------------------------
+checking for pwritev()
+
+objs/autotest.c:10:23: warning: implicit declaration of function 'pwritev' is invalid in C99 [-Wimplicit-function-declaration]
+                  n = pwritev(1, vec, 1, 0);
+                      ^
+1 warning generated.
+Undefined symbols for architecture x86_64:
+  "_pwritev", referenced from:
+      _main in autotest-5c9f48.o
+ld: symbol(s) not found for architecture x86_64
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+----------
+
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/uio.h>
+
+int main() {
+    char buf[1]; struct iovec vec[1]; ssize_t n;
+                  vec[0].iov_base = buf;
+                  vec[0].iov_len = 1;
+                  n = pwritev(1, vec, 1, 0);
+                  if (n == -1) return 1;
+    return 0;
+}
+
+----------
+cc -g -O0 -o objs/autotest objs/autotest.c
+----------
+
+----------------------------------------
+checking for sys_nerr
+
+107
+----------------------------------------
+checking for localtime_r()
+
+
+----------------------------------------
+checking for posix_memalign()
+
+
+----------------------------------------
+checking for memalign()
+
+objs/autotest.c:5:28: fatal error: 'malloc.h' file not found
+                  #include <malloc.h>
+                           ^
+1 error generated.
+----------
+
+#include <sys/types.h>
+#include <unistd.h>
+#include <stdlib.h>
+                  #include <malloc.h>
+
+int main() {
+    void *p; p = memalign(4096, 4096);
+                  if (p == NULL) return 1;
+    return 0;
+}
+
+----------
+cc -g -O0 -o objs/autotest objs/autotest.c
+----------
+
+----------------------------------------
+checking for mmap(MAP_ANON|MAP_SHARED)
+
+
+----------------------------------------
+checking for mmap("/dev/zero", MAP_SHARED)
+
+
+----------------------------------------
+checking for System V shared memory
+
+
+----------------------------------------
+checking for POSIX semaphores
+
+objs/autotest.c:8:23: warning: 'sem_init' is deprecated [-Wdeprecated-declarations]
+                  if (sem_init(&sem, 1, 0) == -1) return 1;
+                      ^
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/include/sys/semaphore.h:55:5: note: 'sem_init' has been explicitly marked deprecated here
+int sem_init(sem_t *, int, unsigned int) __deprecated;
+    ^
+objs/autotest.c:9:19: warning: 'sem_destroy' is deprecated [-Wdeprecated-declarations]
+                  sem_destroy(&sem);;
+                  ^
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/include/sys/semaphore.h:53:5: note: 'sem_destroy' has been explicitly marked deprecated here
+int sem_destroy(sem_t *) __deprecated;
+    ^
+2 warnings generated.
+
+----------------------------------------
+checking for POSIX semaphores in libpthread
+
+objs/autotest.c:8:23: warning: 'sem_init' is deprecated [-Wdeprecated-declarations]
+                  if (sem_init(&sem, 1, 0) == -1) return 1;
+                      ^
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/include/sys/semaphore.h:55:5: note: 'sem_init' has been explicitly marked deprecated here
+int sem_init(sem_t *, int, unsigned int) __deprecated;
+    ^
+objs/autotest.c:9:19: warning: 'sem_destroy' is deprecated [-Wdeprecated-declarations]
+                  sem_destroy(&sem);;
+                  ^
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/include/sys/semaphore.h:53:5: note: 'sem_destroy' has been explicitly marked deprecated here
+int sem_destroy(sem_t *) __deprecated;
+    ^
+2 warnings generated.
+
+----------------------------------------
+checking for POSIX semaphores in librt
+
+objs/autotest.c:8:23: warning: 'sem_init' is deprecated [-Wdeprecated-declarations]
+                  if (sem_init(&sem, 1, 0) == -1) return 1;
+                      ^
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/include/sys/semaphore.h:55:5: note: 'sem_init' has been explicitly marked deprecated here
+int sem_init(sem_t *, int, unsigned int) __deprecated;
+    ^
+objs/autotest.c:9:19: warning: 'sem_destroy' is deprecated [-Wdeprecated-declarations]
+                  sem_destroy(&sem);;
+                  ^
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/include/sys/semaphore.h:53:5: note: 'sem_destroy' has been explicitly marked deprecated here
+int sem_destroy(sem_t *) __deprecated;
+    ^
+2 warnings generated.
+ld: library not found for -lrt
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+----------
+
+#include <sys/types.h>
+#include <unistd.h>
+#include <semaphore.h>
+
+int main() {
+    sem_t  sem;
+                  if (sem_init(&sem, 1, 0) == -1) return 1;
+                  sem_destroy(&sem);;
+    return 0;
+}
+
+----------
+cc -g -O0 -o objs/autotest objs/autotest.c -lrt
+----------
+
+----------------------------------------
+checking for struct msghdr.msg_control
+
+
+----------------------------------------
+checking for ioctl(FIONBIO)
+
+
+----------------------------------------
+checking for struct tm.tm_gmtoff
+
+
+----------------------------------------
+checking for struct dirent.d_namlen
+
+
+----------------------------------------
+checking for struct dirent.d_type
+
+
+----------------------------------------
+checking for sysconf(_SC_NPROCESSORS_ONLN)
+
+
+----------------------------------------
+checking for openat(), fstatat()
+
+
+----------------------------------------
+checking for getaddrinfo()
+
+
+----------------------------------------
+checking for PCRE library
+
+objs/autotest.c:4:10: fatal error: 'pcre.h' file not found
+#include <pcre.h>
+         ^
+1 error generated.
+----------
+
+#include <sys/types.h>
+#include <unistd.h>
+#include <pcre.h>
+
+int main() {
+    pcre *re;
+                          re = pcre_compile(NULL, 0, NULL, 0, NULL);
+                          if (re == NULL) return 1;
+    return 0;
+}
+
+----------
+cc -g -O0 -o objs/autotest objs/autotest.c -lpcre
+----------
+
+----------------------------------------
+checking for PCRE library in /usr/local/
+
+
+----------------------------------------
+checking for PCRE JIT support
+
+
+----------------------------------------
+checking for md5 in system md library
+
+objs/autotest.c:4:10: fatal error: 'md5.h' file not found
+#include <md5.h>
+         ^
+1 error generated.
+----------
+
+#include <sys/types.h>
+#include <unistd.h>
+#include <md5.h>
+
+int main() {
+    MD5_CTX md5; MD5Init(&md5);
+    return 0;
+}
+
+----------
+cc -g -O0 -o objs/autotest objs/autotest.c -lmd
+----------
+
+----------------------------------------
+checking for md5 in system md5 library
+
+objs/autotest.c:4:10: fatal error: 'md5.h' file not found
+#include <md5.h>
+         ^
+1 error generated.
+----------
+
+#include <sys/types.h>
+#include <unistd.h>
+#include <md5.h>
+
+int main() {
+    MD5_CTX md5; MD5Init(&md5);
+    return 0;
+}
+
+----------
+cc -g -O0 -o objs/autotest objs/autotest.c -lmd5
+----------
+
+----------------------------------------
+checking for md5 in system OpenSSL crypto library
+
+objs/autotest.c:4:10: fatal error: 'openssl/md5.h' file not found
+#include <openssl/md5.h>
+         ^
+1 error generated.
+----------
+
+#include <sys/types.h>
+#include <unistd.h>
+#include <openssl/md5.h>
+
+int main() {
+    MD5_CTX md5; MD5_Init(&md5);
+    return 0;
+}
+
+----------
+cc -g -O0 -o objs/autotest objs/autotest.c -lcrypto
+----------
+
+----------------------------------------
+checking for sha1 in system md library
+
+objs/autotest.c:4:10: fatal error: 'sha.h' file not found
+#include <sha.h>
+         ^
+1 error generated.
+----------
+
+#include <sys/types.h>
+#include <unistd.h>
+#include <sha.h>
+
+int main() {
+    SHA_CTX sha1; SHA1_Init(&sha1);
+    return 0;
+}
+
+----------
+cc -g -O0 -o objs/autotest objs/autotest.c -lmd
+----------
+
+----------------------------------------
+checking for sha1 in system OpenSSL crypto library
+
+objs/autotest.c:4:10: fatal error: 'openssl/sha.h' file not found
+#include <openssl/sha.h>
+         ^
+1 error generated.
+----------
+
+#include <sys/types.h>
+#include <unistd.h>
+#include <openssl/sha.h>
+
+int main() {
+    SHA_CTX sha1; SHA1_Init(&sha1);
+    return 0;
+}
+
+----------
+cc -g -O0 -o objs/autotest objs/autotest.c -lcrypto
+----------
+
+----------------------------------------
+checking for zlib library
+

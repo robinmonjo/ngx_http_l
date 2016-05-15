@@ -4,16 +4,16 @@ set -o nounset
 set -o errexit
 set -e
 
-#build go shared library
+# build go shared library
 ROOT_DIR=`pwd`
 BUILD_DIR=$ROOT_DIR/build
 mkdir -p $BUILD_DIR
-cd src/set_backend
+cd src/ngx_http_set_backend
 
 echo "building shared library"
 CGO_CFLAGS="-I ./vendor/ngx_devel_kit-$NDK_VERSION/src" go build -o $BUILD_DIR/ngx_http_set_backend_module.a -buildmode=c-shared ngx_http_set_backend_module.go
 
-#compile nginx
+# build nginx
 cd vendor/nginx-$NGINX_VERSION
 CFLAGS="-g -O0" ./configure           											\
     --with-debug                      											\
@@ -25,6 +25,9 @@ CFLAGS="-g -O0" ./configure           											\
     --add-module=../../
 make
 make install
-cd ../..
 
 ln -sf $ROOT_DIR/nginx.conf $BUILD_DIR/nginx/conf/nginx.conf
+
+# build backends_store
+cd $ROOT_DIR/src/backends_store
+go build -o $BUILD_DIR/backends_store
