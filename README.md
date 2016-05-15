@@ -1,30 +1,26 @@
 # ngx_http_set_backend
 
-This is a work in progress. The goal is to develop a nginx plugin in Go (by making mandatory C code call Go code).
-
-The goal is to mimic what github made with nginx as described in [this article](http://githubengineering.com/rearchitecting-github-pages/).
+This is a work in progress. The goal is to develop a nginx plugin in Go (by making mandatory C code call Go code). This module will mimic what github made with nginx as described in [this article](http://githubengineering.com/rearchitecting-github-pages/).
 
 ````
 location / {
-  set $gh_pages_host "";
-  set $gh_pages_path "";
-
-  access_by_lua_file /data/pages-lua/router.lua;
-
-  proxy_set_header X-GitHub-Pages-Root $gh_pages_path;
-  proxy_pass http://$gh_pages_host$request_uri;
+  set_backend $backend;
+  proxy_pass http://$backend$request_uri;
+  
 }
 ````
 
 ### Architecture
 
-nginx worker processes use the `ngx_http_set_backend` module everytime it gets a request in a location that has the `set_bakckend` directive. `ngx_http_set_backend` call a Go `c-shared` library (using `dlopen` and `dlsym`). This library ask to the `backend` process through a unix socket which backend to use according to the given host.
+nginx worker processes use the `ngx_http_set_backend` module every time it gets a http request in a location that has the `set_bakckend` directive. `ngx_http_set_backend` call a Go `c-shared` library (using `dlopen` and `dlsym`, see why in "Issues encountered"). This library asks to the `backend` process through a unix socket which backend to use according to the given host.
 
-This implies that both nginx and the `backend` processes are started.
+The `backend` process uses a key value store ([boltdb](https://github.com/boltdb/bolt)) to map a host to a backend. This key value store will later be manageable through a simple API that will be served directly by nginx using the host **l.io**.
 
-TODOs
-- [ ] unix socket should be accessible by the nobody user
-- [ ] backend_store logs
+This implies that both nginx and the `backend` processes run.
+
+### TODOs
+- [x] unix socket should be accessible by the nobody user
+- [ ] backend logs
 - [ ] start implementing the database (boltdb) that will, from a Host header, find the corresponding IP address
 - [ ] REST api to add backend / delete a backend / list backend / update backend
 - [ ] unit test the Go part
