@@ -16,22 +16,19 @@ location / {
 }
 ````
 
-resources: 
-http://www.nginxguts.com/2011/09/configuration-directives/#more-343
-https://github.com/openresty/set-misc-nginx-module
+### Architecture
+
+nginx worker processes use the `ngx_http_set_backend` module everytime it gets a request in a location that has the `set_bakckend` directive. `ngx_http_set_backend` call a Go `c-shared` library (using `dlopen` and `dlsym`). This library ask to the `backends_store` process through a unix socket which backend to use according to the given host.
+
+This implies that both nginx and the `backends_store` processes are started.
 
 TODOs
+- [ ] unix socket should be accessible by the nobody user
+- [ ] backend_store logs
 - [ ] start implementing the database (boltdb) that will, from a Host header, find the corresponding IP address
-- [ ] REST api to add host / delete a host / list host
+- [ ] REST api to add backend / delete a backend / list backend / update backend
 - [ ] unit test the Go part
 - [ ] integration testing the entire process
-
-### Progress
-
-- [x] call Go code from a nginx module
-- [x] create a directive `set_host` that set a variable (a string). This string must come from the Go code
-- [ ] load testing and dlopen performance documentation
-- [ ] to be continued
 
 ### Hacking
 
@@ -43,6 +40,8 @@ TODOs
 resources:
 - http://blog.ralch.com/tutorial/golang-sharing-libraries/
 - https://www.airpair.com/nginx/extending-nginx-tutorial
+- http://www.nginxguts.com/2011/09/configuration-directives/#more-343
+- https://github.com/openresty/set-misc-nginx-module
 
 ### Issues encountered
 

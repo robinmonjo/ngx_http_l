@@ -1,9 +1,10 @@
 package main
 
 import (
-	"io/ioutil"
+	"bufio"
 	"log"
 	"net"
+	"os"
 
 	"github.com/boltdb/bolt"
 )
@@ -18,6 +19,10 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer func() {
+		l.Close()
+		os.Remove(sockFile)
+	}()
 
 	//open database
 	db, err := bolt.Open(dbFile, 0600, nil)
@@ -37,12 +42,12 @@ func main() {
 }
 
 func processRequest(c net.Conn, db *bolt.DB) {
-	log.Println("Received connection")
 	defer c.Close()
-	host, err := ioutil.ReadAll(c)
+	host, err := bufio.NewReader(c).ReadString('\n')
 	if err != nil {
 		log.Fatal(err)
 	}
+	//TODO: lookup in db the backend for this host
 	log.Println("Received host:", string(host))
-	c.Write([]byte("www.google.com"))
+	c.Write([]byte("www.google.com\n"))
 }

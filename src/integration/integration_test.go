@@ -9,20 +9,22 @@ import (
 
 // helpers
 const (
-	binary = "/lab/build/nginx/sbin/nginx"
-	port   = "8888"
+	nginx    = "/lab/build/nginx/sbin/nginx"
+	backends = "/lab/build/backends_store"
+	port     = "8888"
 )
 
 func startNginx(t *testing.T) {
-	fmt.Printf("starting nginx ...")
-	if err := exec.Command(binary).Run(); err != nil {
+	if err := exec.Command(nginx).Run(); err != nil {
 		t.Fatal(err)
 	}
-	fmt.Println("done")
+	if err := exec.Command(backends).Run(); err != nil {
+		t.Fatal(err)
+	}
 }
 
 func stopNginx(t *testing.T) {
-	if err := exec.Command(binary, "-s", "stop").Run(); err != nil {
+	if err := exec.Command(nginx, "-s", "stop").Run(); err != nil {
 		t.Fatal(err)
 	}
 }

@@ -3,16 +3,40 @@ package main
 
 import (
 	"C"
+	"bufio"
+	"log"
+	"net"
+	"strings"
+)
+
+const (
+	sockFile = "/lab/build/ngx_http_set_backend.sock"
 )
 
 //export LookupBackend
 func LookupBackend(_host *C.char) *C.char {
 	host := C.GoString(_host)
 
-	//TODO perform lookup
-	host = "www.google.com"
+	c, err := net.Dial("unix", sockFile)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer c.Close()
 
-	return C.CString(host)
+	//ask for the backend
+	_, err = c.Write([]byte(host + "\n"))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// read the answer
+	backend, err := bufio.NewReader(c).ReadString('\n')
+	if err != nil {
+		log.Fatal(err)
+	}
+	backend = strings.TrimSuffix(backend, "\n")
+
+	return C.CString(string(backend))
 }
 
 func main() {
