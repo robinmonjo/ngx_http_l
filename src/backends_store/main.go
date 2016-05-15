@@ -37,10 +37,12 @@ func main() {
 }
 
 func processRequest(c net.Conn, db *bolt.DB) {
+	log.Println("Received connection")
 	defer c.Close()
-	_, err := ioutil.ReadAll(c)
+	host, err := ioutil.ReadAll(c)
 	if err != nil {
-		//TODO return error page
+		log.Fatal(err)
 	}
+	log.Println("Received host:", string(host))
 	c.Write([]byte("www.google.com"))
 }
