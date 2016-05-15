@@ -5,7 +5,7 @@ set -o errexit
 
 ROOT_DIR=`pwd`
 NGX_VENDOR_DIR=$ROOT_DIR/src/ngx_http_set_backend/vendor
-GO_VENDOR_DIR=$ROOT_DIR/src/backends_store/vendor
+GO_VENDOR_DIR=$ROOT_DIR/src/backend/vendor
 
 
 # downloading build dependencies into vendor

@@ -10,7 +10,7 @@ import (
 // helpers
 const (
 	nginx    = "/lab/build/nginx/sbin/nginx"
-	backends = "/lab/build/backends_store"
+	backends = "/lab/build/backend"
 	port     = "8888"
 )
 

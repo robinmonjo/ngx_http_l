@@ -18,9 +18,9 @@ location / {
 
 ### Architecture
 
-nginx worker processes use the `ngx_http_set_backend` module everytime it gets a request in a location that has the `set_bakckend` directive. `ngx_http_set_backend` call a Go `c-shared` library (using `dlopen` and `dlsym`). This library ask to the `backends_store` process through a unix socket which backend to use according to the given host.
+nginx worker processes use the `ngx_http_set_backend` module everytime it gets a request in a location that has the `set_bakckend` directive. `ngx_http_set_backend` call a Go `c-shared` library (using `dlopen` and `dlsym`). This library ask to the `backend` process through a unix socket which backend to use according to the given host.
 
-This implies that both nginx and the `backends_store` processes are started.
+This implies that both nginx and the `backend` processes are started.
 
 TODOs
 - [ ] unix socket should be accessible by the nobody user

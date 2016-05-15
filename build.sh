@@ -28,7 +28,7 @@ make install
 
 ln -sf $ROOT_DIR/nginx.conf $BUILD_DIR/nginx/conf/nginx.conf
 
-# build backends_store
-echo "building backends_store"
-cd $ROOT_DIR/src/backends_store
-go build -o $BUILD_DIR/backends_store
+# build backend
+echo "building backend"
+cd $ROOT_DIR/src/backend
+go build -o $BUILD_DIR/backend
