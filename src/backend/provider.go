@@ -5,14 +5,16 @@ import (
 	"github.com/boltdb/bolt"
 	"net"
 	"os"
+	"strings"
 )
 
 type provider struct {
-	socket   string
-	username string
-	listener net.Listener
-	dbFile   string
-	db       *bolt.DB
+	socket          string
+	username        string
+	listener        net.Listener
+	dbFile          string
+	db              *bolt.DB
+	internalMapping map[string]string
 }
 
 func (p *provider) listen() error {
@@ -41,16 +43,30 @@ func (p *provider) listen() error {
 		}
 		go func(c net.Conn) {
 			defer c.Close()
-			host, err := bufio.NewReader(c).ReadString('\n')
-			if err != nil {
-				//TODO return defined web page
-			}
-			backend, err := p.lookupBackend(host)
-			if _, err := c.Write([]byte(backend + "\n")); err != nil {
+			if err := p.processRequest(c); err != nil {
 				//TODO handle error
 			}
 		}(conn)
 	}
+}
+
+func (p *provider) processRequest(c net.Conn) error {
+	host, err := bufio.NewReader(c).ReadString('\n')
+	if err != nil {
+		return err
+	}
+	host = strings.TrimSuffix(host, "\n")
+
+	backend := p.internalMapping[host]
+	if backend == "" {
+		backend, err = p.lookupBackend(host)
+		if err != nil {
+			return err
+		}
+	}
+
+	_, err = c.Write([]byte(backend + "\n"))
+	return err
 }
 
 func (p *provider) lookupBackend(host string) (string, error) {
