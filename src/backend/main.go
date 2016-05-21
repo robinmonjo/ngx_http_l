@@ -5,6 +5,8 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/boltdb/bolt"
 )
 
 const (
@@ -16,11 +18,19 @@ const (
 )
 
 func main() {
+	//open database
+	db, err := bolt.Open(dbFile, 0600, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
+	//start backend provider
 	provider := &provider{
 		socket:          socket,
 		username:        nobody,
-		dbFile:          dbFile,
-		internalMapping: map[string]string{apiHost: "127.0.0.1:9999"},
+		db:              db,
+		internalMapping: map[string]string{apiHost: "127.0.0.1:" + apiPort},
 	}
 	defer provider.cleanup()
 	go func() {
@@ -29,13 +39,14 @@ func main() {
 		}
 	}()
 
+	//start rest api
 	go func() {
-		if err := startApi(apiPort); err != nil {
+		if err := startApi(apiPort, db); err != nil {
 			log.Fatal(err)
 		}
 	}()
 
-	// signal handler
+	//signal handler
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, syscall.SIGINT, syscall.SIGTERM)
 	<-c

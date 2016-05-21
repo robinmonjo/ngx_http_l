@@ -25,3 +25,5 @@ rm -f "nginx-$NGINX_VERSION.tar.gz"
 # download boltdb
 cd $GO_VENDOR_DIR
 git clone https://github.com/boltdb/bolt.git github.com/boltdb/bolt
+git clone https://github.com/gorilla/mux.git github.com/gorilla/mux
+git clone https://github.com/gorilla/context.git github.com/gorilla/context

@@ -2,38 +2,44 @@ package integration
 
 import (
 	"fmt"
+	"log"
 	"net/http"
-	"os/exec"
+	"os"
 	"testing"
+	"time"
 )
 
 // helpers
 const (
-	nginx    = "/lab/build/nginx/sbin/nginx"
-	backends = "/lab/build/backend"
-	port     = "8888"
+	port = "8888"
 )
 
-func startNginx(t *testing.T) {
-	if err := exec.Command(nginx).Run(); err != nil {
-		t.Fatal(err)
+func TestMain(m *testing.M) {
+	backend := &backend{}
+	go func() {
+		if err := backend.start(); err != nil {
+			log.Fatalf("unable to start backend %v", err)
+		}
+	}()
+	time.Sleep(1 * time.Second)
+	if err := startNginx(); err != nil {
+		log.Fatalf("unable to start nginx %v", err)
 	}
-	if err := exec.Command(backends).Run(); err != nil {
-		t.Fatal(err)
-	}
-}
 
-func stopNginx(t *testing.T) {
-	if err := exec.Command(nginx, "-s", "stop").Run(); err != nil {
-		t.Fatal(err)
+	exitCode := m.Run()
+
+	if err := backend.stop(); err != nil {
+		log.Fatalf("unable to stop backend %v", err)
 	}
+	if err := stopNginx(); err != nil {
+		log.Fatalf("unable to stop nginx %v", err)
+	}
+
+	os.Exit(exitCode)
 }
 
 // integration testing
 func TestNginxRunning(t *testing.T) {
-	startNginx(t)
-	defer stopNginx(t)
-
 	resp, err := http.Get(fmt.Sprintf("http://127.0.0.1:%s", port))
 	if err != nil {
 		t.Fatal(err)

@@ -2,28 +2,23 @@ package main
 
 import (
 	"bufio"
-	"github.com/boltdb/bolt"
 	"net"
 	"os"
 	"strings"
+
+	"github.com/boltdb/bolt"
 )
 
 type provider struct {
 	socket          string
 	username        string
 	listener        net.Listener
-	dbFile          string
 	db              *bolt.DB
 	internalMapping map[string]string
 }
 
 func (p *provider) listen() error {
-	//open database
 	var err error
-	p.db, err = bolt.Open(p.dbFile, 0600, nil)
-	if err != nil {
-		return err
-	}
 
 	//create unix socket
 	os.RemoveAll(p.socket) //in case it was not destroyed properly on exit
