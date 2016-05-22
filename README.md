@@ -10,6 +10,12 @@ location / {
 }
 ````
 
+### rest api
+
+- Create/Update: `curl -H 'Host: l.io' serverURL/entries.json -X POST -d '{ "host": "some.host.com", "backend": "localhost:3000" }'`
+- Index: `curl -H 'Host: l.io' serverURL/entries.json `
+- Delete: `curl -H 'Host: l.io' serverURL/entries/<url_encoded_host>.json`
+
 ### Architecture
 
 nginx worker processes use the `ngx_http_set_backend` module every time it gets a http request in a location that has the `set_bakckend` directive. `ngx_http_set_backend` call a Go `c-shared` library (using `dlopen` and `dlsym`, see why in "Issues encountered"). This library asks to the `backend` process through a unix socket which backend to use according to the given host.

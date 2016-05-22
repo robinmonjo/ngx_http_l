@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"net/http"
+	"net/url"
 
 	"github.com/boltdb/bolt"
 	"github.com/gorilla/context"
@@ -30,27 +31,17 @@ type route struct {
 var routes = []route{
 	route{
 		"GET",
-		"/entries",
+		"/entries.json",
 		index,
 	},
 	route{
-		"GET",
-		"/entries/{host}",
-		show,
-	},
-	route{
-		"PUT",
-		"/entries/{host}",
-		update,
-	},
-	route{
 		"POST",
-		"/entries",
+		"/entries.json",
 		create,
 	},
 	route{
 		"DELETE",
-		"/entries/{host}",
+		"/entries/{host}.json",
 		destroy,
 	},
 }
@@ -92,10 +83,6 @@ func index(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func show(w http.ResponseWriter, r *http.Request) {
-
-}
-
 func create(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	var e entry
@@ -116,12 +103,24 @@ func create(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(e)
 }
 
-func update(w http.ResponseWriter, r *http.Request) {
-
-}
-
 func destroy(w http.ResponseWriter, r *http.Request) {
-
+	vars := mux.Vars(r)
+	host, err := url.QueryUnescape(vars["host"])
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+	if err := getDB(r).Update(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte(bucket))
+		if b == nil {
+			return nil
+		}
+		return b.Delete([]byte(host))
+	}); err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+	json.NewEncoder(w).Encode(map[string]string{"status": "ok"})
 }
 
 // helpers
