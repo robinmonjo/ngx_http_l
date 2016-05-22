@@ -27,7 +27,7 @@ This implies that both nginx and the `backend` processes run.
 ### TODOs
 - [x] unix socket should be accessible by the nobody user
 - [ ] backend logs
-- [ ] REST api to add backend / delete a backend / list backend / update backend (using gorilla mux as the router)
+- [x] REST api to add backend / delete a backend / list backend / update backend (using gorilla mux as the router)
 - [ ] start implementing the database (boltdb) that will, from a Host header, find the corresponding IP address
 - [ ] unit test the Go part
 - [ ] integration testing the entire process
