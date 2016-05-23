@@ -65,7 +65,22 @@ func (p *provider) processRequest(c net.Conn) error {
 }
 
 func (p *provider) lookupBackend(host string) (string, error) {
-	return "www.google.com", nil
+	backend := "www.google.com"
+	if err := p.db.Update(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte(bucket))
+		if b == nil {
+			return nil
+		}
+		res := b.Get([]byte(host))
+		if res != nil {
+			backend = string(res)
+		}
+		return nil
+	}); err != nil {
+		return "", err
+	}
+
+	return backend, nil
 }
 
 func (p *provider) cleanup() {
