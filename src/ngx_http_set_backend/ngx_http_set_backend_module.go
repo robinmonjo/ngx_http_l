@@ -10,14 +10,14 @@ import (
 )
 
 const (
-	sockFile = "/lab/build/ngx_http_set_backend.sock"
+	socket = "/lab/build/ngx_http_set_backend.sock"
 )
 
 //export LookupBackend
 func LookupBackend(_host *C.char) *C.char {
 	host := C.GoString(_host)
 
-	c, err := net.Dial("unix", sockFile)
+	c, err := net.Dial("unix", socket)
 	if err != nil {
 		log.Fatal(err)
 	}

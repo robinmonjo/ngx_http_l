@@ -2,6 +2,7 @@ package integration
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
@@ -49,8 +50,6 @@ func TestSimpleGet(t *testing.T) {
 	if resp.StatusCode != code {
 		t.Fatalf("expected status code to be %d, got %d", code, resp.StatusCode)
 	}
-
-	fmt.Println("All good baby")
 }
 
 // rest API testing
@@ -96,9 +95,40 @@ func TestDestroy(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	fmt.Println(body)
 	expectedCode := 200
 	if code != expectedCode {
 		t.Fatalf("expected status code to be %d, got %d", expectedCode, code)
+	}
+}
+
+// provider
+func TestProvider(t *testing.T) {
+	host := "success.com"
+	backend := "www.apple.com"
+
+	var payload = map[string]string{
+		"host":    host,
+		"backend": backend,
+	}
+
+	_, _, err := apiDo("POST", fmt.Sprintf("%s/entries.json", nginxURL), payload)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/library/test/success.html", nginxURL), nil)
+	req.Host = host
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer resp.Body.Close()
+	content, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if string(content) != "<HTML><HEAD><TITLE>Success</TITLE></HEAD><BODY>Success</BODY></HTML>" {
+		t.Fatalf("not the expected content, got: %q", string(content))
 	}
 }
