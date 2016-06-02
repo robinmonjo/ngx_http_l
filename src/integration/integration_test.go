@@ -91,7 +91,7 @@ func TestIndex(t *testing.T) {
 
 func TestDestroy(t *testing.T) {
 	host := url.QueryEscape("host1.com")
-	body, code, err := apiDo("DELETE", fmt.Sprintf("%s/entries/%s.json", nginxURL, host), nil)
+	_, code, err := apiDo("DELETE", fmt.Sprintf("%s/entries/%s.json", nginxURL, host), nil)
 	if err != nil {
 		t.Fatal(err)
 	}

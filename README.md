@@ -29,8 +29,7 @@ This implies that both nginx and the `backend` processes run.
 - [ ] backend logs
 - [x] REST api to add backend / delete a backend / list backend / update backend (using gorilla mux as the router)
 - [x] start implementing the database (boltdb) that will, from a Host header, find the corresponding IP address
-- [ ] unit test the Go part
-- [ ] integration testing the entire process
+- [x] integration tests
 - [ ] defaut pages for errors (i.e: host not registered, error in backend provider etc ...)
 - [ ] unikernel ?
 
