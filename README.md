@@ -25,6 +25,8 @@ The `backend` process uses a key value store ([boltdb](https://github.com/boltdb
 This implies that both nginx and the `backend` processes run.
 
 ### TODOs
+- [ ] switch to alpine linux
+- [ ] make a release container (as small as possible, without go curl git ...)
 - [x] unix socket should be accessible by the nobody user
 - [ ] backend logs
 - [x] REST api to add backend / delete a backend / list backend / update backend (using gorilla mux as the router)
