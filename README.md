@@ -6,7 +6,7 @@ This is a work in progress. The goal is to develop a nginx plugin in Go (by maki
 location / {
   set_backend $backend;
   proxy_pass http://$backend$request_uri;
-  
+
 }
 ````
 
@@ -25,7 +25,7 @@ The `backend` process uses a key value store ([boltdb](https://github.com/boltdb
 This implies that both nginx and the `backend` processes run.
 
 ### TODOs
-- [ ] switch to alpine linux
+- [x] switch to alpine linux (not doable musl_libc doesn't implement dlopen)
 - [ ] make a release container (as small as possible, without go curl git ...)
 - [x] unix socket should be accessible by the nobody user
 - [ ] backend logs
