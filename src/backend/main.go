@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -13,11 +14,15 @@ const (
 	socket  = "/lab/build/ngx_http_set_backend.sock"
 	dbFile  = "/lab/build/backends.db"
 	nobody  = "nobody"
-	apiHost = "l.io"
 	apiPort = "9999"
 )
 
 func main() {
+	domain := os.Getenv("DOMAIN")
+	if domain == "" {
+		log.Fatal("$DOMAIN must be set")
+	}
+
 	//open database
 	db, err := bolt.Open(dbFile, 0600, nil)
 	if err != nil {
@@ -27,10 +32,12 @@ func main() {
 
 	//start backend provider
 	provider := &provider{
-		socket:          socket,
-		username:        nobody,
-		db:              db,
-		internalMapping: map[string]string{apiHost: "127.0.0.1:" + apiPort},
+		socket:   socket,
+		username: nobody,
+		db:       db,
+		internalMapping: map[string]string{
+			fmt.Sprintf("api.%s", domain): "127.0.0.1:" + apiPort,
+		},
 	}
 	defer provider.cleanup()
 	go func() {

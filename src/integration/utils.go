@@ -3,7 +3,9 @@ package integration
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"os"
 )
 
 func apiDo(verb, endpoint string, payload map[string]string) (interface{}, int, error) {
@@ -11,7 +13,7 @@ func apiDo(verb, endpoint string, payload map[string]string) (interface{}, int, 
 	json.NewEncoder(b).Encode(payload)
 
 	req, err := http.NewRequest(verb, endpoint, b)
-	req.Host = "l.io"
+	req.Host = fmt.Sprintf("api.%s", os.Getenv("DOMAIN"))
 	req.Header.Set("Content-Type", "application/json")
 
 	client := &http.Client{}

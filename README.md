@@ -12,9 +12,13 @@ location / {
 
 ### rest api
 
-- Create/Update: `curl -H 'Host: l.io' serverURL/entries.json -X POST -d '{ "host": "some.host.com", "backend": "localhost:3000" }'`
-- Index: `curl -H 'Host: l.io' serverURL/entries.json `
-- Delete: `curl -H 'Host: l.io' serverURL/entries/<url_encoded_host>.json`
+The container should be started with a defined `DOMAIN` environment variable. You can then access the api by using this URL `api.$DOMAIN`.
+
+- Create/Update: `curl -H api.$DOMAIN/entries.json -X POST -d '{ "host": "some.host.com", "backend": "localhost:3000" }'`
+- Index: `curl -H api.$DOMAIN/entries.json `
+- Delete: `curl -H api.$DOMAIN/entries/<url_encoded_host>.json`
+
+Note: you can use `-H 'Host: api.l.io'` if you don't want to setup DNS.
 
 ### Architecture
 
@@ -28,11 +32,13 @@ This implies that both nginx and the `backend` processes run.
 - [x] switch to alpine linux (not doable musl_libc doesn't implement dlopen)
 - [ ] make a release container (as small as possible, without go curl git ...)
 - [x] unix socket should be accessible by the nobody user
-- [ ] backend logs
+- [ ] logs: backend logs + nginx log on stdout / stderr so everything is handled by docker
 - [x] REST api to add backend / delete a backend / list backend / update backend (using gorilla mux as the router)
 - [x] start implementing the database (boltdb) that will, from a Host header, find the corresponding IP address
 - [x] integration tests
-- [ ] defaut pages for errors (i.e: host not registered, error in backend provider etc ...)
+- [ ] github pages for errors
+- [x] possible to set the domaine name $DOMAIN and respond to api.$DOMAIN
+- [ ] make / route document the API
 - [ ] unikernel ?
 
 ### Hacking
