@@ -29,8 +29,7 @@ The `backend` process uses a key value store ([boltdb](https://github.com/boltdb
 This implies that both nginx and the `backend` processes run.
 
 ### TODOs
-- [x] switch to alpine linux (not doable musl_libc doesn't implement dlopen)
-- [ ] make a release container (as small as possible, without go curl git ...)
+- [ ] make a release build (container as small as possible, without go curl git ..., optimized for nginx + nginx built with releases options)
 - [x] unix socket should be accessible by the nobody user
 - [ ] logs: backend logs + nginx log on stdout / stderr so everything is handled by docker
 - [x] REST api to add backend / delete a backend / list backend / update backend (using gorilla mux as the router)

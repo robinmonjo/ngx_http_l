@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM debian:jessie
 
 ARG GO_VERSION
 
